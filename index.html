@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text to Emoji Converter</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background: #f0f8ff;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      margin-bottom: 20px;
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #eaf6ff;
+      display: inline-block;
+    }
+    #copy-btn {
+      margin-top: 15px;
+      display: none;
+      background: #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text to Emoji Converter</h1>
+  <textarea id="inputText" placeholder="Enter text here..."></textarea><br>
+  <button onclick="convertToEmoji()">Convert to Emoji</button>
+  <button onclick="convertToText()">Convert to Text</button>
+  <div id="output"></div><br>
+  <button id="copy-btn" onclick="copyToClipboard()">Copy Result</button>
+
+  <script>
+    const emojiMap = {
+      a: "🍎", b: "📚", c: "🌊", d: "🐶", e: "🐘",
+      f: "🍟", g: "🌳", h: "🏠", i: "🍦", j: "🕹️",
+      k: "🔑", l: "🍋", m: "📫", n: "🌌", o: "🍊",
+      p: "🖊️", q: "🦄", r: "🤖", s: "🌞", t: "🌴",
+      " ": "⬜", u: "☂️", v: "🎻", w: "🌎", x: "⚒️",
+      y: "🩻", z: "⚡" // Space as blank emoji and more letters
+    };
+
+    const reverseEmojiMap = Object.fromEntries(
+      Object.entries(emojiMap).map(([key, value]) => [value, key])
+    );
+
+    function convertToEmoji() {
+      const inputText = document.getElementById("inputText").value.toLowerCase();
+      const emojiText = inputText
+        .split("")
+        .map(char => emojiMap[char] || char)
+        .join(" ");
+      document.getElementById("output").innerText = emojiText;
+      document.getElementById("copy-btn").style.display = "inline-block";
+    }
+
+    function convertToText() {
+      const inputText = document.getElementById("inputText").value;
+      const text = inputText
+        .split(" ")
+        .map(emoji => reverseEmojiMap[emoji] || emoji)
+        .join("");
+      document.getElementById("output").innerText = text;
+      document.getElementById("copy-btn").style.display = "inline-block";
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById("output").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Result copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+  </html>
